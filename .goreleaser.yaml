@@ -7,8 +7,10 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
-  - env:
-      - CGO_ENABLED=0
+#  - env:
+#      - CGO_ENABLED=0
+  - binary: server
+    main: ./tt/main.go
     goos:
       - linux
       - windows
@@ -22,6 +24,21 @@ builds:
     goarm:
         - 6
         - 7
+  - binary: client
+    main: ./tt/dd.go
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
 archives:
   - format: tar.gz
     # this name template makes the OS and Arch compatible with the results of uname.
@@ -42,6 +59,7 @@ archives:
     format_overrides:
     - goos: windows
       format: zip
+
 checksum:
   name_template: 'checksums.txt'
 snapshot:
