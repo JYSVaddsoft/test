@@ -7,43 +7,51 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
-#  - env:
-#      - CGO_ENABLED=0
-  - binary: server
-    main: ./tt/main.go
+  - main: ./tt/main.go
+    id: "main"
+    binary: main
+    env:
+      - CGO_ENABLED=0
     goos:
-      - linux
       - windows
-      - darwin
-      - freebsd
+      #      - darwin
+      - linux
+    #      - freebsd
     goarch:
       - amd64
-      - 386
-      - arm
+      #      - 386
+      #      - arm
       - arm64
     goarm:
-        - 6
-        - 7
-  - binary: client
-    main: ./tt/dd.go
+      - 6
+      - 7
+
+  - main: ./tt/dd.go
+    id: "dd"
+    binary: dd
+    env:
+      - CGO_ENABLED=0
     goos:
-      - linux
       - windows
-      - darwin
-      - freebsd
+      #      - darwin
+      - linux
+    #      - freebsd
     goarch:
       - amd64
-      - 386
-      - arm
+      #      - 386
+      #      - arm
       - arm64
     goarm:
       - 6
       - 7
 archives:
-  - format: tar.gz
+  - id: "dd"
+    builds:
+      - dd
+    format: tar.gz
     # this name template makes the OS and Arch compatible with the results of uname.
     name_template: >-
-      {{ .ProjectName }}_
+      {{ .Binary }}_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else if eq .Arch "386" }}i386
@@ -51,14 +59,41 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     # use zip for windows archives
     replacements:
-      darwin: Darwin
+      #      darwin: Darwin
       linux: Linux
       windows: Windows
-      386: i386
+      #      386: i386
       amd64: x86_64
     format_overrides:
-    - goos: windows
-      format: zip
+      - goos: windows
+        format: zip
+    files:
+      - _build/config/server.conf
+      - README.md
+  - id: "main"
+    builds:
+      - main
+    format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .Binary }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    replacements:
+      #      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      #      386: i386
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
 
 checksum:
   name_template: 'checksums.txt'
