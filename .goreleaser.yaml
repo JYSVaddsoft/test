@@ -68,7 +68,6 @@ archives:
       - goos: windows
         format: zip
     files:
-      - _build/config/server.conf
       - README.md
   - id: "main"
     builds:
