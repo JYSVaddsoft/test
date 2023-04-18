@@ -3,5 +3,5 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("rc-fix")
+	fmt.Println("v0.1.0.230410_rc")
 }
