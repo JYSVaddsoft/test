@@ -7,5 +7,5 @@ import (
 
 func main() {
 	fmt.Println(runtime.GOOS)
-	fmt.Println("dev")
+	fmt.Println("test-ddd")
 }
