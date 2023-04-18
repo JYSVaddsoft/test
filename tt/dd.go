@@ -7,4 +7,5 @@ func main() {
 	fmt.Println("fix:")
 	fmt.Println("fix: 2")
 	fmt.Println("feat:")
+	fmt.Println("feat: 1")
 }
